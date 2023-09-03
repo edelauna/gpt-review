@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const wait = require('./wait');
+import * as core from '@actions/core';
+import { wait } from './wait';
 
 
 // most @actions toolkit packages have async methods
@@ -14,7 +14,7 @@ async function run() {
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed((error as Error).message);
   }
 }
 
