@@ -11,7 +11,7 @@ jobs:
   units:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: npm ci
     - run: npm test
       env:
@@ -21,7 +21,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         openai_api_key: ${{ secrets.OPENAI_API_KEY }}
