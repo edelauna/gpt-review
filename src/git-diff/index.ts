@@ -7,10 +7,17 @@ export interface Diff {
   patch: Patch[]
 }
 
+class GitDiffBaseRefException extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = 'GitDiffBaseRefException';
+  }
+}
+
 export const run = async () => {
   const headRef: string | undefined = process.env["GITHUB_HEAD_REF"] || process.env["GITHUB_REF_NAME"]
   const baseRef: string = process.env["GITHUB_BASE_REF"] || core.getInput("TARGET_BRANCH")
-  if(!baseRef) throw Error(`Missing github.base_ref, which is required.
+  if(!baseRef) throw new GitDiffBaseRefException(`Missing github.base_ref, which is required.
   This is available when the event that triggers a workflow run is a pull_request.
   Alternatively it can be set via the input parameter target_branch.
   `)

@@ -1,27 +1,22 @@
-import * as process from 'process';
-import * as cp from 'child_process';
-import * as path from 'path';
+import * as core from '@actions/core';
+import * as gitDiff from './git-diff';
+import { run } from '.';
 
-interface ExecSyncException extends Error {
-  stdout: Buffer
-  stderr: Buffer
-}
+jest.mock('./git-diff', () => ({
+  run: jest.fn()
+}))
 
-/**
- * Requires `export OPENAI_API_KEY=${your-api-key}` to run
- */
-test.skip('[integration] test runs', () => {
-  process.env['INPUT_OPENAI_API_KEY'] = process.env['OPENAI_API_KEY'];
-  process.env['INPUT_TARGET_BRANCH' ] = 'main';
+beforeEach(() => {
+  jest.resetAllMocks();
+})
 
-  const ip = path.join(__dirname, 'index.ts');
-  try {
-    const result = cp.execSync(`npx ts-node ${ip}`, {env: process.env}).toString();
-    console.log(result);
-  } catch(err) {
-    console.log(err)
-    console.log((err as ExecSyncException).stdout.toString())
-    console.log((err as ExecSyncException).stderr.toString())
-    throw err
-  }
+test('run receives GitDiffBaseRefException', async () => {
+  const mockWarning = jest.spyOn(core, 'warning');
+  const mockRun = gitDiff.run as jest.Mock
+  const gitDiffBaseRefException = Error("err")
+  gitDiffBaseRefException.name = "GitDiffBaseRefException"
+  mockRun.mockRejectedValue(gitDiffBaseRefException)
+  await run()
+
+  expect(mockWarning).toHaveBeenCalledTimes(1)
 })
