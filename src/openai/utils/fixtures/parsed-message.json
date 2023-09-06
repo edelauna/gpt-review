@@ -1,0 +1,89 @@
+{
+  "fileName": "index.ts",
+  "patch": [
+    {
+      "lineNumber": 1,
+      "line": "+import * as core from '@actions/core';"
+    },
+    {
+      "lineNumber": 2,
+      "line": "+import { wait } from './wait';"
+    },
+    {
+      "lineNumber": 3,
+      "line": ""
+    },
+    {
+      "lineNumber": 4,
+      "line": ""
+    },
+    {
+      "lineNumber": 5,
+      "line": " // most @actions toolkit packages have async methods"
+    },
+    {
+      "lineNumber": 6,
+      "line": " async function run() {"
+    },
+    {
+      "lineNumber": 7,
+      "line": "   try {"
+    },
+    {
+      "lineNumber": 8,
+      "line": "     const ms = core.getInput('milliseconds');"
+    },
+    {
+      "lineNumber": 9,
+      "line": "     core.info(`Waiting ${ms} milliseconds ...`);"
+    },
+    {
+      "lineNumber": 10,
+      "line": ""
+    },
+    {
+      "lineNumber": 11,
+      "line": "     core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true"
+    },
+    {
+      "lineNumber": 12,
+      "line": "     await wait(parseInt(ms));"
+    },
+    {
+      "lineNumber": 13,
+      "line": "     core.info((new Date()).toTimeString());"
+    },
+    {
+      "lineNumber": 14,
+      "line": ""
+    },
+    {
+      "lineNumber": 15,
+      "line": "     core.setOutput('time', new Date().toTimeString());"
+    },
+    {
+      "lineNumber": 16,
+      "line": "   } catch (error) {"
+    },
+    {
+      "lineNumber": 17,
+      "line": "+    corre.setFailed((error as Error).message);"
+    },
+    {
+      "lineNumber": 18,
+      "line": "   }"
+    },
+    {
+      "lineNumber": 19,
+      "line": " }"
+    },
+    {
+      "lineNumber": 20,
+      "line": ""
+    },
+    {
+      "lineNumber": 21,
+      "line": " run();"
+    }
+  ]
+}
