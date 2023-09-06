@@ -1,0 +1,85 @@
+{
+  "fileName": "package-lock.json",
+  "patch": [
+    {
+      "lineNumber": 4360,
+      "line": "       \"version\": \"8.3.2\","
+    },
+    {
+      "lineNumber": 4361,
+      "line": "       \"resolved\": \"https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz\","
+    },
+    {
+      "lineNumber": 4362,
+      "line": "       \"integrity\": \"sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==\","
+    },
+    {
+      "lineNumber": 4363,
+      "line": "       \"bin\": {"
+    },
+    {
+      "lineNumber": 4364,
+      "line": "         \"uuid\": \"dist/bin/uuid\""
+    },
+    {
+      "lineNumber": 4365,
+      "line": "       }"
+    },
+    {
+      "lineNumber": 4366,
+      "line": "     },"
+    },
+    {
+      "lineNumber": 4367,
+      "line": "+    \"node_modules/v8-compile-cache-lib\": {"
+    },
+    {
+      "lineNumber": 4368,
+      "line": "+      \"version\": \"3.0.1\","
+    },
+    {
+      "lineNumber": 4369,
+      "line": "+      \"resolved\": \"https://registry.npmjs.org/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz\","
+    },
+    {
+      "lineNumber": 4370,
+      "line": "+      \"integrity\": \"sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==\","
+    },
+    {
+      "lineNumber": 4371,
+      "line": "+      \"dev\": true"
+    },
+    {
+      "lineNumber": 4372,
+      "line": "+    },"
+    },
+    {
+      "lineNumber": 4373,
+      "line": "     \"node_modules/v8-to-istanbul\": {"
+    },
+    {
+      "lineNumber": 4374,
+      "line": "       \"version\": \"9.1.0\","
+    },
+    {
+      "lineNumber": 4375,
+      "line": "       \"resolved\": \"https://registry.npmjs.org/v8-to-istanbul/-/v8-to-istanbul-9.1.0.tgz\","
+    },
+    {
+      "lineNumber": 4376,
+      "line": "       \"integrity\": \"sha512-6z3GW9x8G1gd+JIIgQQQxXuiJtCXeAjp6RaPEPLv62mH3iPHPxV6W3robxtCzNErRo6ZwTmzWhsbNvjyEBKzKA==\","
+    },
+    {
+      "lineNumber": 4377,
+      "line": "       \"dev\": true,"
+    },
+    {
+      "lineNumber": 4378,
+      "line": "       \"dependencies\": {"
+    },
+    {
+      "lineNumber": 4379,
+      "line": "         \"@jridgewell/trace-mapping\": \"^0.3.12\","
+    }
+  ]
+}
