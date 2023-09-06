@@ -19,8 +19,7 @@ export const run = async () => {
   const baseRef: string = process.env["GITHUB_BASE_REF"] || core.getInput("TARGET_BRANCH")
   if(!baseRef) throw new GitDiffBaseRefException(`Missing github.base_ref, which is required.
   This is available when the event that triggers a workflow run is a pull_request.
-  Alternatively it can be set via the input parameter target_branch.
-  `)
+  Alternatively it can be set via the input parameter target_branch.`)
 
   const fetchArgs = [
     "fetch", "origin", `refs/heads/${baseRef}`
