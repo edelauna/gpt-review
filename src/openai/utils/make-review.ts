@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import * as core from '@actions/core';
 
-const REVIEW_LIMIT = 7;
+const REVIEW_LIMIT = 10;
 let existingReview = 0;
 
 const openai = new OpenAI({
