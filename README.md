@@ -1,6 +1,6 @@
 [![Build and Test](https://github.com/actions/checkout/actions/workflows/test.yml/badge.svg)](https://github.com/actions/checkout/actions/workflows/test.yml)
 
-# Checkout V0.1
+# Chat GPT Code Peer Review v1
 
 This GitHub Action enables automatic code reviewing in your repository by sending the git diff patches between a head ref and a base ref to OpenAI's API for annotation using Chat GPT. By leveraging the power of natural language processing, it enhances collaboration and automates the review process similar to static code analysis tools. The annotations provided by Chat GPT serve as non-invasive automated reviews, helping to identify potential issues and improve overall code quality.
 
@@ -9,7 +9,8 @@ This GitHub Action enables automatic code reviewing in your repository by sendin
 <!-- start usage -->
 ```yaml
 - uses: actions/checkout@v4
-- uses: edelauna/gpt-review@v0.1
+- name: Chat GPT Code Peer Review
+  uses: edelauna/gpt-review@v1
   with:
     # OpenAI API key used for sending patch diffs for review.
     # Required
@@ -28,7 +29,7 @@ Goto `files` sections of the PR to see annotations, along the lines of:
 ![Screenshot 2023-09-06 171602](https://github.com/edelauna/gpt-review/assets/54631123/f9fd6771-5f1d-423c-8abb-ff56c9917888)
 
 > [!NOTE]
-> 
+>
 > If there are no annotations, you can verify by checking the CI job logs to see if any `Notices` have been posted.
 
 # License
