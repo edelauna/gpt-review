@@ -10269,7 +10269,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.roomForReview = exports.makeReview = exports.functions = void 0;
 var openai_1 = __importDefault(__nccwpck_require__(47));
 var core = __importStar(__nccwpck_require__(2186));
-var REVIEW_LIMIT = 7;
+var REVIEW_LIMIT = 10;
 var existingReview = 0;
 var openai = new openai_1.default({
     apiKey: core.getInput("OPENAI_API_KEY")
