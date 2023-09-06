@@ -36,7 +36,9 @@ export const run = async () => {
     fetchArgs.splice(2,0, `refs/heads/${headRef}`)
   }
   await exec.exec("git", fetchArgs)
+  core.startGroup(`git ${diffArgs.join(" ")}`)
   const {stdout: output} = await exec.getExecOutput("git", diffArgs)
+  core.endGroup()
   const patches: Diff[] = parse(output)
   return patches;
 }
