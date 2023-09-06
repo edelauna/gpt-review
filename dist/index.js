@@ -9835,6 +9835,21 @@ module.exports.implForWrapper = function (wrapper) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -9899,6 +9914,15 @@ exports.run = void 0;
 var exec = __importStar(__nccwpck_require__(1514));
 var core = __importStar(__nccwpck_require__(2186));
 var parse_1 = __nccwpck_require__(3415);
+var GitDiffBaseRefException = /** @class */ (function (_super) {
+    __extends(GitDiffBaseRefException, _super);
+    function GitDiffBaseRefException(message) {
+        var _this = _super.call(this, message) || this;
+        _this.name = 'GitDiffBaseRefException';
+        return _this;
+    }
+    return GitDiffBaseRefException;
+}(Error));
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
     var headRef, baseRef, fetchArgs, diffArgs, output, patches;
     return __generator(this, function (_a) {
@@ -9907,7 +9931,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 headRef = process.env["GITHUB_HEAD_REF"] || process.env["GITHUB_REF_NAME"];
                 baseRef = process.env["GITHUB_BASE_REF"] || core.getInput("TARGET_BRANCH");
                 if (!baseRef)
-                    throw Error("Missing github.base_ref, which is required.\n  This is available when the event that triggers a workflow run is a pull_request.\n  Alternatively it can be set via the input parameter target_branch.\n  ");
+                    throw new GitDiffBaseRefException("Missing github.base_ref, which is required.\n  This is available when the event that triggers a workflow run is a pull_request.\n  Alternatively it can be set via the input parameter target_branch.");
                 fetchArgs = [
                     "fetch", "origin",
                     "refs/heads/".concat(baseRef)
@@ -9925,9 +9949,11 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                 return [4 /*yield*/, exec.exec("git", fetchArgs)];
             case 1:
                 _a.sent();
+                core.startGroup("git ".concat(diffArgs.join(" ")));
                 return [4 /*yield*/, exec.getExecOutput("git", diffArgs)];
             case 2:
                 output = (_a.sent()).stdout;
+                core.endGroup();
                 patches = (0, parse_1.parse)(output);
                 return [2 /*return*/, patches];
         }
@@ -10058,33 +10084,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 var core = __importStar(__nccwpck_require__(2186));
 var gitDiff = __importStar(__nccwpck_require__(3298));
 var makeReview = __importStar(__nccwpck_require__(2724));
-function run() {
-    return __awaiter(this, void 0, void 0, function () {
-        var diffs, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, gitDiff.run()];
-                case 1:
-                    diffs = _a.sent();
-                    return [4 /*yield*/, makeReview.run(diffs)];
-                case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    core.setFailed(error_1.message);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
+var run = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var diffs, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, gitDiff.run()];
+            case 1:
+                diffs = _a.sent();
+                return [4 /*yield*/, makeReview.run(diffs)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                switch (error_1.name) {
+                    case 'GitDiffBaseRefException':
+                        core.warning(error_1.message);
+                        break;
+                    default:
+                        core.setFailed(error_1.message);
+                        break;
+                }
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-}
-run();
+}); };
+exports.run = run;
+(0, exports.run)();
 
 
 /***/ }),
