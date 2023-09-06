@@ -14,14 +14,22 @@ export const run = async () => {
   This is available when the event that triggers a workflow run is a pull_request.
   Alternatively it can be set via the input parameter target_branch.
   `)
-  const args = [
+
+  const fetchArgs = [
+    "fetch", "origin", `refs/heads/${baseRef}`
+  ]
+  const diffArgs = [
     "diff",
-    baseRef,
+    `origin/${baseRef}`,
     "--diff-algorithm=minimal", // should benchmark if it's worth the additional time to produce cleaner diffs
     "--unified=7" // bumping from 3 to seven to pass more context to the model
   ]
-  if(headRef) args.splice(2,0, headRef)
-  const {stdout: output} = await exec.getExecOutput("git", args)
+  if(headRef) {
+    diffArgs.splice(2,0, `origin/${headRef}`)
+    fetchArgs.splice(2,0, `refs/heads/${headRef}`)
+  }
+  await exec.exec("git", fetchArgs)
+  const {stdout: output} = await exec.getExecOutput("git", diffArgs)
   const patches: Diff[] = parse(output)
   return patches;
 }

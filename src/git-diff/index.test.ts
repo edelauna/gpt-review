@@ -11,7 +11,8 @@ const gitDiffInput = () => {
 
 jest.mock('@actions/core');
 jest.mock('@actions/exec', () => ({
-  getExecOutput: jest.fn()
+  getExecOutput: jest.fn(),
+  exec: jest.fn()
 }))
 
 const OLD_ENV = process.env;
@@ -27,8 +28,8 @@ afterAll(() => {
 });
 
 test('[integretion] run should execute on pr event', async () => {
-  process.env.GITHUB_HEAD_REF = 'feature-branch';
-  process.env.GITHUB_BASE_REF = 'main';
+  process.env['GITHUB_HEAD_REF'] = 'feature-branch';
+  process.env['GITHUB_BASE_REF'] = 'main';
 
   const mockExec = exec.getExecOutput as jest.Mock
   mockExec.mockResolvedValue({
@@ -38,8 +39,8 @@ test('[integretion] run should execute on pr event', async () => {
 
   expect(mockExec).toHaveBeenCalledWith('git', [
     'diff',
-    'main',
-    'feature-branch',
+    'origin/main',
+    'origin/feature-branch',
     '--diff-algorithm=minimal',
     '--unified=7',
   ]);
@@ -47,7 +48,9 @@ test('[integretion] run should execute on pr event', async () => {
 })
 
 test('[integretion] run should execute on push event', async () => {
-  process.env.GITHUB_REF_NAME = 'feature-branch-2';
+  process.env['GITHUB_HEAD_REF'] = '';
+  process.env['GITHUB_REF_NAME'] = 'feature-branch-2';
+  process.env['GITHUB_BASE_REF'] = ''
   const mockInput = core.getInput as jest.Mock
   mockInput.mockReturnValue('dev');
 
@@ -59,8 +62,8 @@ test('[integretion] run should execute on push event', async () => {
 
   expect(mockExec).toHaveBeenCalledWith('git', [
     'diff',
-    'dev',
-    'feature-branch-2',
+    'origin/dev',
+    'origin/feature-branch-2',
     '--diff-algorithm=minimal',
     '--unified=7',
   ]);
@@ -68,6 +71,9 @@ test('[integretion] run should execute on push event', async () => {
 })
 
 test('[integretion] run should execute without head ref', async () => {
+  process.env['GITHUB_HEAD_REF'] = '';
+  process.env['GITHUB_REF_NAME'] = '';
+  process.env['GITHUB_BASE_REF'] = '';
   const mockInput = core.getInput as jest.Mock
   mockInput.mockReturnValue('dev');
 
@@ -79,15 +85,16 @@ test('[integretion] run should execute without head ref', async () => {
 
   expect(mockExec).toHaveBeenCalledWith('git', [
     'diff',
-    'dev',
+    'origin/dev',
     '--diff-algorithm=minimal',
     '--unified=7',
   ]);
   expect(output.length).toBe(56);
 })
 
-test('run should throw on push without input', async () => {
-  process.env.GITHUB_REF_NAME = 'feature-branch-2';
+test('[integration] run should throw on push without input', async () => {
+  process.env['GITHUB_REF_NAME'] = 'feature-branch-2';
+  process.env['GITHUB_BASE_REF'] = '';
   const mockInput = core.getInput as jest.Mock
   mockInput.mockReturnValue('');
 
