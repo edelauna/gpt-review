@@ -1,13 +1,12 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Chat GPT Code Peer Review'
+description: 'This action performs a code peer review using OpenAI ChatGPT API and functions.'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  openai_api_key:
+    description: 'The API key for accessing the OpenAI ChatGPT API.'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  target_branch:
+    description: 'The target branch for the git diff to run against.'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
