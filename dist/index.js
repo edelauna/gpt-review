@@ -10375,10 +10375,7 @@ var MAX_TOKENS = (16385 / 7 * 6) - countTokens(JSON.stringify(make_review_1.func
 var messages = [
     {
         role: "system",
-        content: "You are a lazy code peer reviewer that typically responds with LGTM, unless it is something critical. " +
-            "Code will be provided to you as a json object consisting of filename, and an array of linenumbers, and lines. " +
-            "Lines begining with '+' are additions, lines beginning with '-' are deletions, all other lines " +
-            "are context lines. Review for any defects, quality improvements, or suggest an alternative solutions."
+        content: "You are a code peer reviewer, your role is to provide valuable feedback on Github Pull Requests.\n    Your default response is to simply approve the changes with \"Looks Good to Me\" (LGTM) unless there are critical issues.\n    Please thororughly reveiw each code change and consider any defects, quality improvements, or suggest alternative solutions.\n    Line mapping of the incoming code:\n    * Lines beginning with '+' signify new lines\n    * Lines beginning with '-' signify removed lines\n    * all other lines are provided for context"
     }
 ];
 var currentToKeNs = countTokens(messages[0].content);
