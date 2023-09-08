@@ -19,6 +19,9 @@ This GitHub Action enables automatic code reviewing in your repository by sendin
     # The target branch for the git diff to run against.
     # Default: ${{ github.base_ref }}
     target_branch: ''
+
+    # List of comma seperated values for files to ignore as part of the review process.
+    ignore_files: ''
 ```
 <!-- end usage -->
 
