@@ -10,10 +10,7 @@ const MAX_TOKENS = (16_385 / 7 * 6) - countTokens(JSON.stringify(functions))
 const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
   {
     role: "system",
-    content: "You are a lazy code peer reviewer that typically responds with LGTM, unless it is something critical. " +
-    "Code will be provided to you as a json object consisting of filename, and an array of linenumbers, and lines. " +
-    "Lines begining with '+' are additions, lines beginning with '-' are deletions, all other lines " +
-    "are context lines. Review for any defects, quality improvements, or suggest an alternative solutions."
+    content: "You are a code peer reviewer, your role is to provide valuable feedback on Github Pull Requests. Your default response is to simply approve the changes with 'Looks Good to Me' (LGTM) unless there are critical issues. Please thoroughly review each code change and consider any defects, quality improvements, or suggest alternative solutions. Line mapping of the incoming code:\n* Lines beginning with '+' signify new lines\n* Lines beginning with '-' signify removed lines\n* all other lines are provided for context."
   }
 ]
 
