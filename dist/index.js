@@ -10276,8 +10276,8 @@ var openai = new openai_1.default({
 });
 exports.functions = [
     {
-        name: "make_critical_review",
-        description: "Provide a review of any defects, quality improvements, or suggest an alternative solutions.",
+        name: "provide_critical_review",
+        description: "Provide a critical review of new code changes, identify any defects or suggest quality improvements. You can also suggest alternative solutions. The review should focus on lines beginning with \"+\".",
         parameters: {
             type: "object",
             properties: {
@@ -10291,9 +10291,9 @@ exports.functions = [
                 },
                 file: {
                     type: "string",
-                    description: "Filename the review relates too"
+                    description: "Filename the review relates to"
                 },
-                line: {
+                startLine: {
                     type: "number",
                     description: "The starting line for which the review relates."
                 },
@@ -10302,17 +10302,17 @@ exports.functions = [
                     description: "The end line for which the review relates."
                 }
             },
-            required: ["title", "file", "line", "message"]
+            required: ["title", "message", "file", "startLine", "endLine"]
         }
     }, {
-        name: "make_review",
-        description: "LGTM",
+        name: "approve",
+        description: "Default response to approve changes.",
         parameters: {
             type: "object",
             properties: {
                 message: {
                     type: "string",
-                    description: "LGTM"
+                    description: "Approval message, typically \"Looks Good to Me\" (LGTM)."
                 }
             }
         }
@@ -10346,8 +10346,8 @@ var _makeReview = function (response, choice) {
             return;
         if (message.function_call.name != exports.functions[0].name)
             return;
-        var _a = JSON.parse(message.function_call.arguments), title = _a.title, file = _a.file, line = _a.line, endLine = _a.endLine, review = _a.message;
-        core.notice(review, { title: title, file: file, startLine: line, endLine: endLine });
+        var _a = JSON.parse(message.function_call.arguments), title = _a.title, file = _a.file, startLine = _a.startLine, endLine = _a.endLine, review = _a.message;
+        core.notice(review, { title: title, file: file, startLine: startLine, endLine: endLine });
         existingReview++;
     }
     catch (_b) {
@@ -10375,10 +10375,7 @@ var MAX_TOKENS = (16385 / 7 * 6) - countTokens(JSON.stringify(make_review_1.func
 var messages = [
     {
         role: "system",
-        content: "You are a lazy code peer reviewer that typically responds with LGTM, unless it is something critical. " +
-            "Code will be provided to you as a json object consisting of filename, and an array of linenumbers, and lines. " +
-            "Lines begining with '+' are additions, lines beginning with '-' are deletions, all other lines " +
-            "are context lines. Review for any defects, quality improvements, or suggest an alternative solutions."
+        content: "You are a code peer reviewer, your role is to provide valuable feedback on Github Pull Requests. Your default response is to simply approve the changes with 'Looks Good to Me' (LGTM) unless there are critical issues. Please thoroughly review each code change and consider any defects, quality improvements, or suggest alternative solutions. Line mapping of the incoming code:\n* Lines beginning with '+' signify new lines\n* Lines beginning with '-' signify removed lines\n* all other lines are provided for context."
     }
 ];
 var currentToKeNs = countTokens(messages[0].content);

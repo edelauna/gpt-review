@@ -10,8 +10,8 @@ const openai = new OpenAI({
 
 export const functions = [
   {
-    name : "make_critical_review",
-    description: "Provide a review of any defects, quality improvements, or suggest an alternative solutions.",
+    name : "provide_critical_review",
+    description: "Provide a critical review of new code changes, identify any defects or suggest quality improvements. You can also suggest alternative solutions. The review should focus on lines beginning with \"+\".",
     parameters: {
       type: "object",
       properties: {
@@ -25,9 +25,9 @@ export const functions = [
         },
         file: {
           type: "string",
-          description: "Filename the review relates too"
+          description: "Filename the review relates to"
         },
-        line: {
+        startLine: {
           type: "number",
           description: "The starting line for which the review relates."
         },
@@ -36,17 +36,17 @@ export const functions = [
           description: "The end line for which the review relates."
         }
       },
-      required: ["title", "file", "line", "message"]
+      required: ["title", "message", "file", "startLine", "endLine"]
     }
   }, {
-    name : "make_review",
-    description: "LGTM",
+    name : "approve",
+    description: "Default response to approve changes.",
     parameters: {
       type: "object",
       properties: {
         message: {
           type: "string",
-          description: "LGTM"
+          description: "Approval message, typically \"Looks Good to Me\" (LGTM)."
         }
       }
     }
@@ -71,8 +71,8 @@ const _makeReview = (response: OpenAI.Chat.Completions.ChatCompletion, choice = 
     if(!message.function_call) return
     if(message.function_call.name != functions[0].name) return
 
-    const {title, file, line, endLine, message: review} = JSON.parse(message.function_call.arguments)
-    core.notice(review, {title, file, startLine: line, endLine})
+    const {title, file, startLine, endLine, message: review} = JSON.parse(message.function_call.arguments)
+    core.notice(review, {title, file, startLine, endLine})
     existingReview++;
   } catch {
     if(choice < 3) _makeReview(response, choice + 1)
