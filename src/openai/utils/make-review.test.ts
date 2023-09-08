@@ -5,10 +5,13 @@ import { makeReview } from './make-review';
 
 const messages:OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [{
   role: "system",
-  content: "You are a lazy code peer reviewer that typically responds with LGTM, unless it is something critical. " +
-  "Code will be provided to you as a json object consisting of filename, and an array of linenumbers, and contents " +
-  "at that line. Lines begining with '+' are additions, lines beginning with '-' are deletions, all other lines " +
-  "are context lines. Review for any defects, quality improvements, or suggest an alternative solutions."
+  content: `You are a code peer reviewer, your role is to provide valuable feedback on Github Pull Requests.
+  Your default response is to simply approve the changes with "Looks Good to Me" (LGTM) unless there are critical issues.
+  Please thororughly reveiw each code change and consider any defects, quality improvements, or suggest alternative solutions.
+  Line mapping of the incoming code:
+  * Lines beginning with '+' signify new lines
+  * Lines beginning with '-' signify removed lines
+  * all other lines are provided for context`
 }, {
   role: 'user',
   content: JSON.stringify(parsedMessage)
@@ -28,7 +31,7 @@ beforeEach(() => jest.resetAllMocks())
  */
 test.skip('[integration] it should call OpenAI', async() => {
   const noticeMock = core.notice as jest.Mock
-  await makeReview([messages[0]]);
+  await makeReview(messages);
   expect(noticeMock).toHaveBeenCalledTimes(1)
 })
 
