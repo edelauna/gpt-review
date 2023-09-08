@@ -39,14 +39,14 @@ export const functions = [
       required: ["title", "message", "file", "startLine", "endLine"]
     }
   }, {
-    name : "approve",
-    description: "Default response to approve changes.",
+    name : "provide_review",
+    description: "Provide a review of new code changes.",
     parameters: {
       type: "object",
       properties: {
         message: {
           type: "string",
-          description: "Approval message, typically \"Looks Good to Me\" (LGTM)."
+          description: "Review message, typically \"Looks Good to Me\" (LGTM)."
         }
       }
     }
