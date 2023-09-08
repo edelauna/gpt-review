@@ -39,15 +39,14 @@ test('[integretion] run should execute on pr event', async () => {
 
   expect(mockExec).toHaveBeenCalledWith('git', [
     'diff',
-    'origin/main',
-    'origin/feature-branch',
+    'origin/main...origin/feature-branch',
     '--diff-algorithm=minimal',
     '--unified=7',
   ]);
   expect(output.length).toBe(56);
 })
 
-test('[integretion] run should execute on push event', async () => {
+test('[integration] run should execute on push event', async () => {
   process.env['GITHUB_HEAD_REF'] = '';
   process.env['GITHUB_REF_NAME'] = 'feature-branch-2';
   process.env['GITHUB_BASE_REF'] = ''
@@ -62,15 +61,14 @@ test('[integretion] run should execute on push event', async () => {
 
   expect(mockExec).toHaveBeenCalledWith('git', [
     'diff',
-    'origin/dev',
-    'origin/feature-branch-2',
+    'origin/dev...origin/feature-branch-2',
     '--diff-algorithm=minimal',
     '--unified=7',
   ]);
   expect(output.length).toBe(56);
 })
 
-test('[integretion] run should execute without head ref', async () => {
+test('[integration] run should execute without head ref', async () => {
   process.env['GITHUB_HEAD_REF'] = '';
   process.env['GITHUB_REF_NAME'] = '';
   process.env['GITHUB_BASE_REF'] = '';

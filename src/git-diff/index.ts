@@ -31,7 +31,7 @@ export const run = async () => {
     "--unified=7" // bumping from 3 to seven to pass more context to the model
   ]
   if(headRef) {
-    diffArgs.splice(2,0, `origin/${headRef}`)
+    diffArgs[1] = `origin/${baseRef}...origin/${headRef}`
     fetchArgs.splice(2,0, `refs/heads/${headRef}`)
   }
   await exec.exec("git", fetchArgs)

@@ -9943,7 +9943,7 @@ var run = function () { return __awaiter(void 0, void 0, void 0, function () {
                     "--unified=7" // bumping from 3 to seven to pass more context to the model
                 ];
                 if (headRef) {
-                    diffArgs.splice(2, 0, "origin/".concat(headRef));
+                    diffArgs[1] = "origin/".concat(baseRef, "...origin/").concat(headRef);
                     fetchArgs.splice(2, 0, "refs/heads/".concat(headRef));
                 }
                 return [4 /*yield*/, exec.exec("git", fetchArgs)];
