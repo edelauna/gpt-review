@@ -7,6 +7,10 @@ inputs:
   target_branch:
     description: 'The target branch for the git diff to run against.'
     required: false
+  ignore_files:
+    description: |
+      Comma separated list of values to ignore files.
+      For example `package.json,dist` will ignore files with paths starting with `package.json`, and `dist`.
 runs:
   using: 'node16'
   main: 'dist/index.js'
