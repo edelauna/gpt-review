@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { parse } from './parse';
+import { Patch, parse } from './parse';
 
 const gitDiffInput = () => {
   const fixturePath = path.join(__dirname, './fixtures/git-diff-output.txt');
@@ -13,4 +13,5 @@ test("parse() should return lines and line number", () => {
   expect(output.length).toBe(41);
   expect(output[40].fileName).toBe("wait.ts");
   expect(output[40].patch.length).toBe(5)
+  expect(output[40].patch.every((value: Patch)=> !value.line.startsWith('+'))).toBe(true)
 })

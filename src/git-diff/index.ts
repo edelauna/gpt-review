@@ -28,7 +28,7 @@ export const run = async () => {
     "diff",
     `origin/${baseRef}`,
     "--diff-algorithm=minimal", // should benchmark if it's worth the additional time to produce cleaner diffs
-    "--unified=7" // bumping from 3 to seven to pass more context to the model
+    "--unified=0" // bumping to 0 - model seems to comment alot on context
   ]
   if(headRef) {
     diffArgs[1] = `origin/${baseRef}...origin/${headRef}`

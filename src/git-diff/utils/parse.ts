@@ -26,7 +26,8 @@ export const parse = (input: string) => {
       until = diffMatch[2] ? parseInt(diffMatch[2]) : 1;
     } else if (until > 0) {
       if (!line.startsWith('-')) {  // deleted code seems to confuse the model
-        patch.push({ lineNumber, line });
+        const _line = line.startsWith('+') ? line.substring(1) : line // '+' seem to confuse the model
+        patch.push({ lineNumber, line: _line });
         lineNumber++;
         until--;
       }
