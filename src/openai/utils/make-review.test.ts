@@ -22,7 +22,9 @@ jest.mock('@actions/core', () => ({
   notice: jest.fn()
 }));
 jest.mock('openai')
-
+jest.mock('./message-manager', () => ({
+  recordResponse: jest.fn()
+}))
 
 beforeEach(() => jest.resetAllMocks())
 

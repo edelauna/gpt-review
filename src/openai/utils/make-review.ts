@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import * as core from '@actions/core';
+import { recordResponse } from './message-manager';
 
 const REVIEW_LIMIT = 10;
 let existingReview = 0;
@@ -36,7 +37,7 @@ export const functions = [
           description: "The end line for which the review relates."
         }
       },
-      required: ["title", "message", "file", "startLine", "endLine"]
+      required: ["title", "message", "file", "startLine"]
     }
   }, {
     name : "provide_review",
@@ -69,6 +70,9 @@ const _makeReview = (response: OpenAI.Chat.Completions.ChatCompletion, choice = 
 
     const message = response.choices[choice].message
     if(!message.function_call) return
+
+    recordResponse(message.function_call.name)
+
     if(message.function_call.name != functions[0].name) return
 
     const {title, file, startLine, endLine, message: review} = JSON.parse(message.function_call.arguments)
