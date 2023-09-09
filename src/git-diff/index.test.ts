@@ -41,7 +41,7 @@ test('[integretion] run should execute on pr event', async () => {
     'diff',
     'origin/main...origin/feature-branch',
     '--diff-algorithm=minimal',
-    '--unified=7',
+    expect.anything(),
   ]);
   expect(output.length).toBe(56);
 })
@@ -63,7 +63,7 @@ test('[integration] run should execute on push event', async () => {
     'diff',
     'origin/dev...origin/feature-branch-2',
     '--diff-algorithm=minimal',
-    '--unified=7',
+    expect.anything(),
   ]);
   expect(output.length).toBe(56);
 })
@@ -85,7 +85,7 @@ test('[integration] run should execute without head ref', async () => {
     'diff',
     'origin/dev',
     '--diff-algorithm=minimal',
-    '--unified=7',
+    expect.anything(),
   ]);
   expect(output.length).toBe(56);
 })

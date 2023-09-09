@@ -10,7 +10,7 @@ const MAX_TOKENS = (16_385 / 7 * 6) - countTokens(JSON.stringify(functions))
 const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
   {
     role: "system",
-    content: "You are a code peer reviewer, your role is to provide valuable feedback on Github Pull Requests. Your default response is to simply review the changes with 'Looks Good to Me' (LGTM) unless there are critical issues. Please quickly review each code change and consider any defects, quality improvements, or suggest alternative solutions. Line mapping of the incoming code:\n* Lines beginning with '+' signify new lines\n* Lines beginning with '-' signify removed lines\n* all other lines are provided for context."
+    content: "As a code peer reviewer, your role is to provide valuable feedback on snippets of code for a GitHub Pull Request. Since you wont always be provided the context for the snippet, your default response is to provide a review stating 'Looks Good to Me' (LGTM)."
   }
 ]
 

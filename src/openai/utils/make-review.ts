@@ -12,7 +12,7 @@ const openai = new OpenAI({
 export const functions = [
   {
     name : "provide_critical_review",
-    description: "Provide a critical review of new code changes, identify any defects or suggest quality improvements. You can also suggest alternative solutions. The review should focus on lines beginning with \"+\".",
+    description: "Provide a critical review, identifying any defects, or suggesting an improvement for quality, readability, performance, error handling, security, or adherence to best practices.",
     parameters: {
       type: "object",
       properties: {
@@ -40,8 +40,8 @@ export const functions = [
       required: ["title", "message", "file", "startLine"]
     }
   }, {
-    name : "provide_review",
-    description: "Provide a review of new code changes.",
+    name : "provide_default_review",
+    description: "Provide a default review.",
     parameters: {
       type: "object",
       properties: {
