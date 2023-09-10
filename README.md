@@ -29,9 +29,10 @@ This GitHub Action enables automatic code reviewing in your repository by sendin
 
 Goto `files` sections of the PR to see annotations, an [example of a PR with annotations](https://github.com/edelauna/discord-bot-ai/pull/74/files):
 
-![Screenshot 2023-09-06 165310](https://github.com/edelauna/gpt-review/assets/54631123/e37c4a7b-0172-461e-b016-347d7e0f3ccf)
+![Screenshot 2023-09-10 105540](https://github.com/edelauna/gpt-review/assets/54631123/90d14a0e-5c56-4c33-9a8c-abcf29d8d104)
 
-![Screenshot 2023-09-06 171602](https://github.com/edelauna/gpt-review/assets/54631123/f9fd6771-5f1d-423c-8abb-ff56c9917888)
+![Screenshot 2023-09-10 105616](https://github.com/edelauna/gpt-review/assets/54631123/e0ea17c7-2c41-464a-aafe-7c4fc17df5b5)
+
 
 > [!NOTE]
 >
@@ -48,7 +49,7 @@ The scripts and documentation in this project are released under the [MIT Licens
 Github Actions Limits Annotations to 10.
 
 # Dependencies
-* `[@actions/core](https://github.com/actions/toolkit/tree/main/packages/core)`
-* `[@actions/exec](https://github.com/actions/toolkit/tree/main/packages/exec)`
-* `[gpt-3-encoder](https://github.com/latitudegames/GPT-3-Encoder#readme)`
-* `[openai](https://github.com/openai/openai-node#readme)`
+* [`@actions/core`](https://github.com/actions/toolkit/tree/main/packages/core)
+* [`@actions/exec`](https://github.com/actions/toolkit/tree/main/packages/exec)
+* [`gpt-3-encoder`](https://github.com/latitudegames/GPT-3-Encoder#readme)
+* [`openai`](https://github.com/openai/openai-node#readme)
