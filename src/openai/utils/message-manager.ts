@@ -7,11 +7,15 @@ const countTokens = (input:string | null) => input ? encode(input).length : 0
 
 const MAX_TOKENS = (16_385 / 7 * 6) - countTokens(JSON.stringify(functions))
 
-const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-  {
-    role: "system",
-    content: "As a code peer reviewer, your role is to provide valuable feedback on snippets of code for a GitHub Pull Request. Since you wont always be provided the context for the snippet, your default response is to provide a review stating 'Looks Good to Me' (LGTM)."
-  }
+const SYSTEM_MESSAGE: OpenAI.Chat.Completions.ChatCompletionMessageParam = {
+  role: "system",
+  content: "As a code peer reviewer, your role is to provide valuable feedback on snippets of code for a GitHub Pull Request. Since you wont always be provided the context for the snippet, your default response is to provide a review stating 'Looks Good to Me' (LGTM)."
+}
+
+const SYSTEM_HYDRATE_FREQUENCY = 7
+
+const messages = [
+  SYSTEM_MESSAGE
 ]
 
 let currentToken = countTokens(messages[0].content);
@@ -42,10 +46,23 @@ export const messageManager = (input: Diff) => {
   return messages
 }
 
+let responses = 0;
+
 export const recordResponse = (functionName: string) => {
   const message: OpenAI.Chat.Completions.ChatCompletionMessageParam = { role: "function", name: functionName, content: "OK"}
   const nextToken = countTokens(JSON.stringify(message));
   _cycler(nextToken)
   _append(nextToken, message)
+  responses++;
+
+  // keep the system instructions fresh in the message history
+  if(responses % SYSTEM_HYDRATE_FREQUENCY == 0) addSystemMessage();
+
   return messages;
+}
+
+export const addSystemMessage = () => {
+  const nextToken = countTokens(SYSTEM_MESSAGE.content);
+  _cycler(nextToken)
+  _append(nextToken, SYSTEM_MESSAGE)
 }
