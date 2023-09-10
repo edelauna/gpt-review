@@ -10405,16 +10405,18 @@ exports.roomForReview = roomForReview;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.recordResponse = exports.messageManager = void 0;
+exports.addSystemMessage = exports.recordResponse = exports.messageManager = void 0;
 var gpt_3_encoder_1 = __nccwpck_require__(1818);
 var make_review_1 = __nccwpck_require__(4941);
 var countTokens = function (input) { return input ? (0, gpt_3_encoder_1.encode)(input).length : 0; };
 var MAX_TOKENS = (16385 / 7 * 6) - countTokens(JSON.stringify(make_review_1.functions));
+var SYSTEM_MESSAGE = {
+    role: "system",
+    content: "As a code peer reviewer, your role is to provide valuable feedback on snippets of code for a GitHub Pull Request. Since you wont always be provided the context for the snippet, your default response is to provide a review stating 'Looks Good to Me' (LGTM)."
+};
+var SYSTEM_HYDRATE_FREQUENCY = 7;
 var messages = [
-    {
-        role: "system",
-        content: "As a code peer reviewer, your role is to provide valuable feedback on snippets of code for a GitHub Pull Request. Since you wont always be provided the context for the snippet, your default response is to provide a review stating 'Looks Good to Me' (LGTM)."
-    }
+    SYSTEM_MESSAGE
 ];
 var currentToken = countTokens(messages[0].content);
 var _cycler = function (nextToken) {
@@ -10441,14 +10443,25 @@ var messageManager = function (input) {
     return messages;
 };
 exports.messageManager = messageManager;
+var responses = 0;
 var recordResponse = function (functionName) {
     var message = { role: "function", name: functionName, content: "OK" };
     var nextToken = countTokens(JSON.stringify(message));
     _cycler(nextToken);
     _append(nextToken, message);
+    responses++;
+    // keep the system instructions fresh in the message history
+    if (responses % SYSTEM_HYDRATE_FREQUENCY == 0)
+        (0, exports.addSystemMessage)();
     return messages;
 };
 exports.recordResponse = recordResponse;
+var addSystemMessage = function () {
+    var nextToken = countTokens(SYSTEM_MESSAGE.content);
+    _cycler(nextToken);
+    _append(nextToken, SYSTEM_MESSAGE);
+};
+exports.addSystemMessage = addSystemMessage;
 
 
 /***/ }),
